@@ -1,0 +1,19 @@
+<ion-app>
+  <ion-menu side="start" menuId="first" contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Prototype</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false" >
+          <ion-item [routerDirection]="'root'" [routerLink]="'home'" lines="full">Home</ion-item>
+          <ion-item [routerDirection]="'root'" [routerLink]="'map'" lines="full">Map</ion-item>
+        </ion-menu-toggle>
+         </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-app>

@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            Home
+        </ion-title>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+    <ion-toolbar>
+        <ion-searchbar (ionChange)="serachRestaurant(searchText)" [(ngModel)]="searchText" [debounce]="500"
+                       placeholder="Enter new address">
+        </ion-searchbar>
+    </ion-toolbar>
+    <div *ngIf="suggessionList.length > 0 && !hideList">
+        <div *ngFor="let item of suggessionList ">
+            <ion-item (click)="selectAddr(item)">
+                <ion-icon name="pin"></ion-icon>
+                <ion-label>{{item.address.municipality}}</ion-label>
+                <ion-text>{{item.address.freeformAddress}}</ion-text>
+                <ion-icon *ngIf="item.checked" name="checkmark-circle-outline" slot="end"></ion-icon>
+            </ion-item>
+        </div>
+    </div>
+
+    <div *ngIf="selectedAddr  && selectedAddr.address && selectedAddr.address.municipality" style="padding: 10px">
+        Searched Location
+        <ion-label>{{selectedAddr.address.municipality}}</ion-label>
+        <ion-text>{{selectedAddr.address.freeformAddress}}</ion-text>
+    </div>
+
+    <ion-item (click)="successMsg='';errMsg=''">
+        <ion-label position="stacked">Radius</ion-label>
+        <ion-input [(ngModel)]="radius"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+        <p>Device Location </p>
+        <ion-note color="primary" (click)="getDeviceLocation()" slot="end">Detect location</ion-note>
+    </ion-item>
+    <ion-item lines="none">
+        <ion-label position="stacked">Latitude</ion-label>
+        <ion-input [(ngModel)]="deviceLoc.lat" type="tel"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+        <ion-label position="stacked">Longitude</ion-label>
+        <ion-input [(ngModel)]="deviceLoc.lon" type="tel"></ion-input>
+    </ion-item>
+    <div style="padding: 10px">
+        <p *ngIf="errMsg" style="color: #ffc409">{{errMsg}}</p>
+        <p *ngIf="successMsg" style="color: #2fdf75">{{successMsg}}</p>
+    </div>
+    <ion-button (click)="validateLocation()" class="ion-padding" color="primary" expand="block">Save</ion-button>
+    <ion-button (click)="calculateDistance()" class="ion-padding" color="primary" expand="block">Calculate distance
+        <span *ngIf=" calcDistance && calcDistance.distance"
+              style="color: #ffc409"> &nbsp; {{ calcDistance.distance | number}} meters</span>
+    </ion-button>
+</ion-content>
